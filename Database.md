@@ -12,13 +12,16 @@
 기본키는 후보키들 중 하나를 선택한 키로 최소성과 유일성을 만족해야합니다. - not null, unique
 
 대체키는 기본키로 지정받지못한 나머지 후보키들입니다. 
+
 - 기본키는 수정이 가능한가요?
+  - 연관관계가 없는 기본키는 수정이 가능하다.
+  - 연관관계에 있더라도 cascade 설정시 수정 가능하다.
   - Alter를 이용해 기본키를 삭제하고 다시 생성한다.
     - 생성 : `Alter table 테이블명 add (constraint 제약조건이름) primary key(컬럼명, 컬럼명)`
     - 삭제 : `Alter table 테이블명 drop (constraint 제약조건이름) primary key`
   - 기본키가 auto_increment일 경우 auto_increment를 해제후 삭제한다.
 - 사실 MySQL의 경우, 기본키를 설정하지 않아도 테이블이 만들어집니다. 어떻게 이게 가능한 걸까요?
-  - 먼저 답으로는 기본적으로 사용자가 설정하지 않아도 auto_increment 속성의 Generated Invisibed PK가 생성됩니다.
+  - 먼저 답으로는 기본적으로 사용자가 설정하지 않아도 `auto_increment` 속성의 Generated Invisibed PK가 생성됩니다.
   - 그렇기에 그냥 명시적으로 생성하고 해당 컬럼을 활용하는것이 좋습니다.
   - PK가 없는 테이블에서 대량의 변경작업이 발생한다면, secondary장비에서 복제 지연이 발생하는 경우를 간헐적으로 경험할 수 있다고합니다.
     - [리플리케이션 문제(feat.복제지연, semi-sync)](https://iiaii.tistory.com/entry/%EB%A6%AC%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%99%80-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95-%EB%B3%B5%EC%A0%9C%EC%A7%80%EC%97%B0-semi-sync)
@@ -300,12 +303,18 @@ DB의 저장 용량 역시 줄일 수 있습니다.
 </details>
 
 <details>
-  <summary><h3>DB Join이 무엇인지 설명하고, 각각의 종류에 대해 설명해 주세요.</h3></summary>
+  <summary><h3>9. DB Join이 무엇인지 설명하고, 각각의 종류에 대해 설명해 주세요.</h3></summary>
   
-- View란
+- DB Join
+  - ![image](https://github.com/Songdoeon/CS-Interview/assets/96420547/267f661f-b17d-44b3-8e94-6e4feaaf2ab5)
 
+  - `Inner Join` -> 교집합
+  - `Left/RIGHT Join` -> 부분집합
+  - `OUTER Join` -> 합집합
+    - MySQL의 경우 `OUTER Join`을 지원하지 않기 때문에 `Left Join`과 `Right Join`을 `UNION` 한다.
+      
 - 사실, JOIN은 상당한 시간이 걸릴 수 있기에 내부적으로 다양한 구현 방식을 사용하고 있습니다. 그 예시에 대해 설명해 주세요.
-
+  
 - 그렇다면 입력한 쿼리에서 어떤 구현 방식을 사용하는지는 어떻게 알 수 있나요?
 
 - 앞 질문들을 통해 인덱스의 중요성을 알 수 있었는데, 그렇다면 JOIN의 성능도 인덱스의 유무의 영향을 받나요?
